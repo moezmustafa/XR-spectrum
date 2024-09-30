@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR.js Example with Two Shapes</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.2.0/aframe/build/aframe-ar.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        a-scene {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <a-scene embedded arjs>
+        <a-marker preset="hiro">
+            <!-- Rotating Box -->
+            <a-entity id="animated-box" geometry="primitive: box; height: 1; width: 1; depth: 1" 
+                      material="color: #4CC3D0" position="-0.75 0.5 0">
+            </a-entity>
+            <!-- Rotating Sphere -->
+            <a-entity id="animated-sphere" geometry="primitive: sphere; radius: 0.5" 
+                      material="color: #EF2D5E" position="0.75 0.5 0">
+            </a-entity>
+        </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+        const box = document.getElementById('animated-box');
+        const sphere = document.getElementById('animated-sphere');
+        let rotationSpeed = 0.02;
+
+        // Sound effect
+        const sound = new Audio('https://www.soundjay.com/button/beep-07.wav');
+
+        // Animation loop
+        function animate() {
+            box.object3D.rotation.y += rotationSpeed; // Rotate box around Y-axis
+            sphere.object3D.rotation.y += rotationSpeed; // Rotate sphere around Y-axis
+            requestAnimationFrame(animate); // Call animate again
+        }
+
+        // Change color on box click
+        box.addEventListener('click', () => {
+            const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+            box.setAttribute('material', 'color', randomColor); // Change box color
+            sound.play(); // Play sound
+        });
+
+        // Change color on sphere click
+        sphere.addEventListener('click', () => {
+            const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+            sphere.setAttribute('material', 'color', randomColor); // Change sphere color
+            sound.play(); // Play sound
+        });
+
+        // Start the animation
+        animate();
+        console.log("AR.js Example with Two Shapes Loaded");
+    </script>
+</body>
+</html>
